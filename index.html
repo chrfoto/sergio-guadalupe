@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda de Guadalupe & Sergio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#FAFAF9',
+                        'cream': '#F5F5F4',
+                        'dusty-rose': '#D6C5B3',
+                        'sand': '#E7E5E4',
+                        'sage': '#8A8583',
+                        'charcoal': '#292524'
+                    },
+                    fontFamily: {
+                        'cinzel': ['Cinzel', 'serif'],
+                        'cormorant': ['Cormorant Garamond', 'serif'],
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Animations */
+        body {
+            /* Texture + Gradient Overlay (Updated with Tapiz) */
+            background-color: #FAFAF9;
+            background-image: linear-gradient(to bottom, rgba(250,250,249,0.85), rgba(245,245,244,0.95)), url('https://i.imgur.com/E7fjftv.png');
+            background-attachment: fixed;
+            background-repeat: repeat;
+        }
+
+        .glassmorphism {
+            background: rgba(250, 250, 249, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(41, 37, 36, 0.08);
+        }
+
+        .glass-dark {
+            background: rgba(41, 37, 36, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Falling Petals Animation */
+        #petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            top: -10%;
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+            fill: #D4AF37; /* Dorado */
+            opacity: 0.8;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        @keyframes fall {
+            0% { top: -10%; }
+            100% { top: 110%; transform: rotate(180deg); }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(0px) rotate(0deg); }
+            100% { transform: translateX(60px) rotate(90deg); }
+        }
+
+        /* Splash Screen Transition */
+        #splash-screen {
+            transition: opacity 1s ease-in-out, visibility 1s;
+        }
+        
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Audio Bars */
+        .bar {
+            width: 3px;
+            height: 4px;
+            background: white;
+            border-radius: 2px;
+            animation: bounce 1s infinite alternate;
+            display: inline-block;
+            margin: 0 1px;
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+        .bar.paused { animation-play-state: paused; height: 4px !important; }
+
+        @keyframes bounce {
+            0% { height: 4px; }
+            100% { height: 16px; }
+        }
+
+        /* Bounce Down Arrow */
+        @keyframes bounce-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        .animate-bounce-down {
+            animation: bounce-down 2s infinite;
+        }
+
+        /* Toast */
+        .toast {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth fade for parallax backgrounds */
+        .bg-fixed {
+            transition: background-position 0.3s ease-out;
+        }
+
+        /* Fullscreen photo blending */
+        .blend-both {
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        /* Hero photo bottom blending */
+        .blend-bottom {
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+        }
+
+        /* Tabs para Panel Admin */
+        .tab-btn.active {
+            border-bottom: 2px solid #8A8583;
+            color: #292524;
+            font-weight: 600;
+        }
+
+        /* Envelope Animations */
+        #envelope-wrapper {
+            perspective: 1000px;
+        }
+        #envelope-flap {
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+            z-index: 30;
+        }
+        #envelope-seal {
+            transition: opacity 0.3s ease-in-out;
+            z-index: 40;
+        }
+        #envelope-letter {
+            transition: transform 0.8s ease-in-out;
+            z-index: 10;
+        }
+
+        /* Destello Metálico Dinámico (Gyroscopio / Mouse) */
+        :root {
+            --shine-x: 50%;
+            --shine-y: 50%;
+        }
+
+        .metallic-edge {
+            position: relative;
+        }
+        
+        .metallic-edge::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px; /* Grosor del borde brillante */
+            background: radial-gradient(200px circle at var(--shine-x) var(--shine-y), rgba(255, 253, 230, 0.9) 0%, rgba(212, 175, 55, 0.8) 25%, transparent 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .metallic-shine-overlay {
+            background: radial-gradient(200px circle at var(--shine-x) var(--shine-y), rgba(212, 175, 55, 0.5) 0%, rgba(255, 255, 255, 0.3) 25%, transparent 100%);
+            mix-blend-mode: overlay;
+        }
+    </style>
+</head>
+<body class="text-charcoal font-cormorant antialiased overflow-x-hidden relative">
+
+    <!-- Petals Animation Container -->
+    <div id="petals-container"></div>
+
+    <!-- 1. Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 z-[60] bg-transparent flex flex-col items-center justify-center overflow-hidden p-6">
+        <div id="envelope-wrapper" class="relative w-full max-w-[340px] bg-white rounded-[2rem] shadow-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-105 transition-transform duration-300 overflow-hidden metallic-edge glassmorphism" onclick="openInvitation()">
+            
+            <!-- Fondo sutil de tapiz para la tarjeta -->
+            <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: url('https://i.imgur.com/E7fjftv.png'); background-size: cover; background-position: center;"></div>
+            
+            <!-- Dynamic Shine Overlay -->
+            <div class="absolute inset-0 pointer-events-none z-50 rounded-[2rem] metallic-shine-overlay"></div>
+            
+            <div class="relative z-10 w-full flex flex-col items-center">
+                <p class="font-montserrat text-[10px] tracking-[0.3em] text-[#D4AF37] uppercase mb-4 font-semibold">Nuestra Boda</p>
+                <h1 class="font-cinzel text-3xl md:text-4xl text-charcoal mb-4 font-semibold">Guadalupe & Sergio</h1>
+                
+                <p id="guest-greeting" class="font-montserrat text-[10px] tracking-[0.2em] text-[#D4AF37] uppercase hidden mb-2 font-bold">Para: <span id="guest-name"></span></p>
+
+                <p class="font-cormorant italic text-lg text-charcoal/80 mb-8 max-w-[250px] leading-relaxed">
+                    "Todo lo sufre, todo lo cree, todo lo espera, todo lo soporta..."
+                </p>
+
+                <button class="w-full py-4 bg-[#D4AF37] text-white rounded-full font-montserrat text-xs uppercase tracking-widest hover:bg-[#aa8022] transition duration-300 shadow-md flex items-center justify-center gap-3">
+                    <i class="fas fa-envelope-open-text"></i> Abrir Invitación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="relative z-10 hidden">
+        
+        <!-- 2. Hero Section -->
+        <section class="relative h-screen w-full flex flex-col justify-between items-center overflow-hidden">
+            <div class="absolute inset-0 blend-bottom">
+                <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://lh3.googleusercontent.com/d/1ZJbegWa62g1YQFJjsqoiSME3ahN1aQ_1');"></div>
+                <!-- Gradient to blend foreground and background smoothly -->
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-black/20"></div>
+            </div>
+            
+            <div class="relative z-10 pt-24 px-6 text-center text-off-white reveal">
+                <p class="font-montserrat text-sm uppercase tracking-[0.3em] mb-4 text-[#D4AF37]">Nuestra Boda</p>
+                <h1 class="font-cinzel text-5xl md:text-7xl font-semibold mb-2 drop-shadow-md">Guadalupe</h1>
+                <p class="font-cormorant text-4xl italic mb-2 text-[#D4AF37]">&</p>
+                <h1 class="font-cinzel text-5xl md:text-7xl font-semibold drop-shadow-md">Sergio</h1>
+            </div>
+
+            <div class="relative z-10 pb-12 flex flex-col items-center reveal">
+                <div class="bg-black/30 backdrop-blur-sm px-8 py-3 rounded-full flex flex-col items-center border border-white/20 shadow-lg cursor-pointer">
+                    <p class="font-montserrat text-[10px] tracking-[0.2em] text-white uppercase mb-2">Deslizar hacia abajo</p>
+                    <i class="fas fa-chevron-down text-[#D4AF37] text-xl animate-bounce-down"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Bloque de Inspiración -->
+        <section class="py-24 px-6 relative">
+            <div class="max-w-2xl mx-auto text-center glassmorphism metallic-edge p-10 md:p-16 rounded-3xl reveal">
+                <i class="fas fa-quote-left text-[#D4AF37] text-2xl mb-6 opacity-70"></i>
+                <p class="font-cormorant italic text-2xl md:text-3xl leading-relaxed text-charcoal mb-6">
+                    «El amor es paciente, es bondadoso. El amor no tiene envidia, no es jactancioso, no se envanece... Todo lo sufre, todo lo cree, todo lo espera, todo lo soporta. El amor nunca deja de ser.»
+                </p>
+                <p class="font-montserrat text-[10px] uppercase tracking-widest text-[#D4AF37] font-semibold">— 1 Corintios 13:4, 7-8</p>
+            </div>
+        </section>
+
+        <!-- Banner Transición Inicial -->
+        <div class="w-full relative h-[60vh] md:h-[80vh] blend-both reveal">
+            <img src="https://lh3.googleusercontent.com/d/1ENt3ky-fW6XqjKG9hRLaM8gdM9T-e7Jh" class="w-full h-full object-cover object-center" alt="Novios">
+        </div>
+
+        <!-- 4. Padres y Padrinos -->
+        <section class="py-24 px-6 text-center">
+            <div class="reveal">
+                <h2 class="font-cinzel text-3xl text-charcoal mb-4">Con la bendición de Dios</h2>
+                <p class="font-cormorant italic text-xl text-[#D4AF37] mb-12">y de nuestros padres</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+                <div class="glassmorphism metallic-edge p-8 rounded-3xl reveal" style="transition-delay: 100ms;">
+                    <h3 class="font-montserrat text-xs uppercase tracking-[0.2em] text-[#D4AF37] mb-6">Padres de la Novia</h3>
+                    <p class="font-cormorant text-2xl text-charcoal font-semibold mb-2">Ma. Carmen Luna</p>
+                    <div class="w-8 h-px bg-[#D4AF37] mx-auto my-3"></div>
+                    <p class="font-cormorant text-2xl text-charcoal font-semibold">Rafael Ramírez</p>
+                </div>
+                <div class="glassmorphism metallic-edge p-8 rounded-3xl reveal" style="transition-delay: 200ms;">
+                    <h3 class="font-montserrat text-xs uppercase tracking-[0.2em] text-[#D4AF37] mb-6">Padres del Novio</h3>
+                    <p class="font-cormorant text-2xl text-charcoal font-semibold mb-2">Graciela Leal</p>
+                    <div class="w-8 h-px bg-[#D4AF37] mx-auto my-3"></div>
+                    <p class="font-cormorant text-2xl text-charcoal font-semibold">Sergio Pérez</p>
+                </div>
+            </div>
+
+            <div class="max-w-lg mx-auto glassmorphism metallic-edge p-8 rounded-3xl reveal">
+                <h3 class="font-montserrat text-xs uppercase tracking-[0.2em] text-[#D4AF37] mb-6">Padrinos de Velación</h3>
+                <p class="font-cormorant text-2xl text-charcoal font-semibold mb-2">Ma. Socorro Ibarra</p>
+                <div class="w-8 h-px bg-[#D4AF37] mx-auto my-3"></div>
+                <p class="font-cormorant text-2xl text-charcoal font-semibold">J. Trinidad Vicente Suárez</p>
+            </div>
+        </section>
+
+        <!-- 5. Cuenta Regresiva -->
+        <section class="py-24 px-6 relative bg-cover bg-center bg-local md:bg-fixed" style="background-image: url('https://lh3.googleusercontent.com/d/1Th9zVjWqyuv-r7gYOccP70_h4YoYV3Cl');">
+            <div class="absolute inset-0 bg-white/10"></div>
+            <div class="relative z-10 max-w-4xl mx-auto text-center reveal">
+                <h2 class="font-cinzel text-3xl md:text-4xl text-charcoal mb-2 font-bold drop-shadow-md glassmorphism !bg-white/10 !backdrop-blur-sm metallic-edge inline-block px-6 py-2 rounded-full border border-white/30">15 de Enero 2027</h2>
+                
+                <div class="mt-6 mb-10">
+                    <span class="font-montserrat text-sm tracking-widest text-charcoal uppercase font-bold glassmorphism !bg-white/10 !backdrop-blur-sm metallic-edge px-6 py-2 rounded-full border border-white/30">Faltan</span>
+                </div>
+                
+                <div class="flex justify-center gap-4 md:gap-8 font-montserrat">
+                    <div class="glassmorphism !bg-white/10 !backdrop-blur-sm metallic-edge w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center rounded-2xl border-white/30">
+                        <span id="days" class="text-3xl md:text-5xl font-semibold text-charcoal drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-[#D4AF37] mt-2 font-bold drop-shadow-md">Días</span>
+                    </div>
+                    <div class="glassmorphism !bg-white/10 !backdrop-blur-sm metallic-edge w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center rounded-2xl border-white/30">
+                        <span id="hours" class="text-3xl md:text-5xl font-semibold text-charcoal drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-[#D4AF37] mt-2 font-bold drop-shadow-md">Hrs</span>
+                    </div>
+                    <div class="glassmorphism !bg-white/10 !backdrop-blur-sm metallic-edge w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center rounded-2xl border-white/30">
+                        <span id="minutes" class="text-3xl md:text-5xl font-semibold text-charcoal drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-[#D4AF37] mt-2 font-bold drop-shadow-md">Min</span>
+                    </div>
+                    <div class="glassmorphism !bg-white/10 !backdrop-blur-sm metallic-edge w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center rounded-2xl border-white/30">
+                        <span id="seconds" class="text-3xl md:text-5xl font-semibold text-charcoal drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-[#D4AF37] mt-2 font-bold drop-shadow-md">Seg</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Ubicaciones (Lugares) -->
+        <section class="py-24 px-6 relative">
+            <h2 class="font-cinzel text-4xl text-center text-charcoal mb-16 reveal">La Celebración</h2>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Ceremonia -->
+                <div class="glassmorphism metallic-edge p-8 md:p-10 rounded-3xl flex flex-col justify-between items-center text-center reveal" style="transition-delay: 100ms;">
+                    <div>
+                        <i class="fas fa-church text-4xl text-[#D4AF37] mb-6"></i>
+                        <h3 class="font-cinzel text-2xl text-charcoal mb-2">Ceremonia Religiosa</h3>
+                        <p class="font-cormorant text-2xl text-[#D4AF37] font-semibold mb-4">Parroquia de la Santísima Trinidad</p>
+                        <p class="font-montserrat text-sm text-charcoal mb-2"><i class="far fa-calendar text-[#D4AF37] mr-2"></i>Viernes, 15 de Enero 2027</p>
+                        <p class="font-montserrat text-sm text-charcoal mb-6"><i class="far fa-clock text-[#D4AF37] mr-2"></i>4:00 PM</p>
+                    </div>
+                    <a href="https://maps.app.goo.gl/g8moL8qoPNt2DKECA?g_st=ic" target="_blank" class="inline-block w-full px-6 py-3 border border-[#D4AF37] text-[#D4AF37] font-montserrat text-xs uppercase tracking-widest rounded-full hover:bg-[#D4AF37] hover:text-white transition duration-300">Ver Mapa</a>
+                </div>
+
+                <!-- Recepción -->
+                <div class="glassmorphism metallic-edge p-8 md:p-10 rounded-3xl flex flex-col justify-between items-center text-center reveal" style="transition-delay: 300ms;">
+                    <div>
+                        <i class="fas fa-champagne-glasses text-4xl text-[#D4AF37] mb-6"></i>
+                        <h3 class="font-cinzel text-2xl text-charcoal mb-2">Recepción</h3>
+                        <p class="font-cormorant text-2xl text-[#D4AF37] font-semibold mb-4">Lugar por confirmar</p>
+                        <p class="font-montserrat text-sm text-charcoal mb-2"><i class="far fa-calendar text-[#D4AF37] mr-2"></i>Viernes, 15 de Enero 2027</p>
+                        <p class="font-montserrat text-sm text-charcoal mb-6"><i class="far fa-clock text-[#D4AF37] mr-2"></i>6:30 PM</p>
+                    </div>
+                    <button class="inline-block w-full px-6 py-3 border border-sage/50 text-sage font-montserrat text-xs uppercase tracking-widest rounded-full cursor-not-allowed">Mapa Pendiente</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Transición 1 (Antes del Itinerario) -->
+        <div class="w-full relative h-[60vh] md:h-[80vh] blend-both reveal">
+            <img src="https://lh3.googleusercontent.com/d/183IEjySjgu-SjRoS8h6dny7oJMJolv8J" class="w-full h-full object-cover object-center" alt="Novios">
+        </div>
+
+        <!-- 7. Itinerario -->
+        <section class="py-24 px-6 bg-sand/20">
+            <h2 class="font-cinzel text-4xl text-center text-charcoal mb-16 reveal">Itinerario</h2>
+            <div class="max-w-xl mx-auto relative">
+                <!-- Línea central -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-[#D4AF37]/40"></div>
+                
+                <!-- Items (Con delay progresivo para transición) -->
+                <div class="space-y-16">
+                    <div class="flex items-center justify-between w-full relative reveal" style="transition-delay: 100ms;">
+                        <div class="w-5/12 text-right pr-4">
+                            <p class="font-montserrat text-sm font-semibold text-charcoal">4:00 PM</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-cream border-2 border-[#D4AF37] flex items-center justify-center z-10 relative text-[#D4AF37] shadow-md">
+                            <i class="fas fa-church text-lg"></i>
+                        </div>
+                        <div class="w-5/12 pl-4 text-left">
+                            <p class="font-cormorant text-2xl text-charcoal">Ceremonia Religiosa</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between w-full relative reveal" style="transition-delay: 200ms;">
+                        <div class="w-5/12 text-right pr-4">
+                            <p class="font-cormorant text-2xl text-charcoal">Recepción</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-cream border-2 border-[#D4AF37] flex items-center justify-center z-10 relative text-[#D4AF37] shadow-md">
+                            <i class="fas fa-glass-cheers text-lg"></i>
+                        </div>
+                        <div class="w-5/12 pl-4 text-left">
+                            <p class="font-montserrat text-sm font-semibold text-charcoal">6:30 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between w-full relative reveal" style="transition-delay: 300ms;">
+                        <div class="w-5/12 text-right pr-4">
+                            <p class="font-montserrat text-sm font-semibold text-charcoal">7:00 PM</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-cream border-2 border-[#D4AF37] flex items-center justify-center z-10 relative text-[#D4AF37] shadow-md">
+                            <i class="fas fa-utensils text-lg"></i>
+                        </div>
+                        <div class="w-5/12 pl-4 text-left">
+                            <p class="font-cormorant text-2xl text-charcoal">Entrada y Cena</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between w-full relative reveal" style="transition-delay: 400ms;">
+                        <div class="w-5/12 text-right pr-4">
+                            <p class="font-cormorant text-2xl text-charcoal">Vals y Protocolo</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-cream border-2 border-[#D4AF37] flex items-center justify-center z-10 relative text-[#D4AF37] shadow-md">
+                            <i class="fas fa-heart text-lg"></i>
+                        </div>
+                        <div class="w-5/12 pl-4 text-left">
+                            <p class="font-montserrat text-sm font-semibold text-charcoal">8:15 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between w-full relative reveal" style="transition-delay: 500ms;">
+                        <div class="w-5/12 text-right pr-4">
+                            <p class="font-montserrat text-sm font-semibold text-charcoal">9:00 PM</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-cream border-2 border-[#D4AF37] flex items-center justify-center z-10 relative text-[#D4AF37] shadow-md">
+                            <i class="fas fa-music text-lg"></i>
+                        </div>
+                        <div class="w-5/12 pl-4 text-left">
+                            <p class="font-cormorant text-2xl text-charcoal">¡Inicia la Fiesta!</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between w-full relative reveal" style="transition-delay: 600ms;">
+                        <div class="w-5/12 text-right pr-4">
+                            <p class="font-cormorant text-2xl text-charcoal">Fin del Evento</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-cream border-2 border-[#D4AF37] flex items-center justify-center z-10 relative text-[#D4AF37] shadow-md">
+                            <i class="fas fa-moon text-lg"></i>
+                        </div>
+                        <div class="w-5/12 pl-4 text-left">
+                            <p class="font-montserrat text-sm font-semibold text-charcoal">12:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Transición Nueva (Después del Itinerario) -->
+        <div class="w-full relative h-[60vh] md:h-[80vh] blend-both reveal">
+            <img src="https://lh3.googleusercontent.com/d/1-KS69Znq4537-yX5fOeWuuZdAi40z3OB" class="w-full h-full object-cover object-center" alt="Novios">
+        </div>
+
+        <!-- 8. Código de Vestimenta -->
+        <section class="py-24 px-6 text-center reveal">
+            <h2 class="font-cinzel text-4xl text-charcoal mb-8">Código de Vestimenta</h2>
+            <div class="flex justify-center gap-8 text-5xl text-[#D4AF37] mb-6 opacity-90">
+                <i class="fas fa-user-tie"></i>
+                <i class="fas fa-person-dress"></i>
+            </div>
+            <p class="font-cormorant italic text-3xl text-[#D4AF37] font-semibold mb-6">Formal</p>
+            <p class="font-montserrat text-xs md:text-sm max-w-md mx-auto text-charcoal/80 leading-relaxed uppercase tracking-widest font-semibold">
+                Siéntete libre de usar el color que quieras... solo les pedimos evitar el color blanco, ya que está reservado únicamente para los novios
+            </p>
+        </section>
+
+        <!-- 9. Lluvia de Sobres -->
+        <section class="py-12 px-6 relative reveal">
+            <div class="max-w-2xl mx-auto glassmorphism metallic-edge p-10 md:p-14 rounded-3xl text-center">
+                <i class="fas fa-envelope-open-text text-4xl text-[#D4AF37] mb-6"></i>
+                <h2 class="font-cinzel text-3xl text-charcoal mb-4">Lluvia de Sobres</h2>
+                
+                <div class="bg-white/60 p-6 rounded-2xl inline-block text-center w-full md:w-auto shadow-inner border border-[#D4AF37]/30 max-w-md mt-2">
+                    <p class="font-montserrat text-sm text-charcoal leading-relaxed">
+                        Tu cariño es nuestro mejor regalo, pero si deseas obsequiarnos algo más, un sobre con efectivo nos ayudará muchísimo en nuestros próximos pasos
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Transición Adicional -->
+        <div class="w-full relative h-[60vh] md:h-[80vh] blend-both reveal">
+            <img src="https://lh3.googleusercontent.com/d/1HT6T30D-rIlMsNJYuec_1NzLazZvy82L" class="w-full h-full object-cover object-center" alt="Novios">
+        </div>
+
+        <!-- 10. Galería en Mosaico -->
+        <section class="py-24 px-6 relative reveal">
+            <h2 class="font-cinzel text-4xl text-center text-charcoal mb-12">Galería</h2>
+            
+            <!-- Contenedor del Mosaico (Grid) -->
+            <div id="gallery-grid" class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+                <!-- Las imágenes se inyectarán aquí mediante JavaScript -->
+            </div>
+        </section>
+
+        <!-- Banner Transición 2 (Antes de Confirmar Asistencia) -->
+        <div class="w-full relative h-[60vh] md:h-[80vh] blend-both reveal">
+            <img src="https://lh3.googleusercontent.com/d/1JdPlKMV1fG4to5Um7tkudGUsSguxbxaZ" class="w-full h-full object-cover object-top" alt="Novios">
+        </div>
+
+        <!-- 11. Formulario RSVP -->
+        <section class="py-24 px-6 relative" id="rsvp">
+            <div class="reveal">
+                <h2 class="font-cinzel text-4xl text-center text-charcoal mb-4">Confirma tu Asistencia</h2>
+                <p class="font-cormorant text-xl text-center text-[#D4AF37] mb-12">Favor de confirmar antes del 18/12/2026</p>
+            </div>
+            
+            <div class="max-w-lg mx-auto glassmorphism metallic-edge p-8 md:p-12 rounded-3xl relative overflow-hidden reveal">
+                
+                <form id="rsvp-form" onsubmit="submitRSVP(event)" class="space-y-6">
+                    <div>
+                        <label class="block font-montserrat text-xs uppercase tracking-widest text-[#D4AF37] mb-2">Nombre Completo</label>
+                        <input type="text" id="rsvp-name" required class="w-full bg-white/50 border border-[#D4AF37]/40 rounded-lg px-4 py-3 font-montserrat text-sm text-charcoal focus:outline-none focus:border-[#D4AF37] transition">
+                    </div>
+                    
+                    <div>
+                        <label class="block font-montserrat text-xs uppercase tracking-widest text-[#D4AF37] mb-2">Teléfono Celular</label>
+                        <input type="tel" id="rsvp-phone" required class="w-full bg-white/50 border border-[#D4AF37]/40 rounded-lg px-4 py-3 font-montserrat text-sm text-charcoal focus:outline-none focus:border-[#D4AF37] transition">
+                    </div>
+
+                    <div>
+                        <label class="block font-montserrat text-xs uppercase tracking-widest text-[#D4AF37] mb-2">¿Asistirás?</label>
+                        <select id="rsvp-attending" onchange="toggleFormFields(this.value === 'yes')" required class="w-full bg-white/50 border border-[#D4AF37]/40 rounded-lg px-4 py-3 font-montserrat text-sm text-charcoal focus:outline-none focus:border-[#D4AF37] transition appearance-none">
+                            <option value="">Selecciona una opción</option>
+                            <option value="yes">Sí, ahí estaré</option>
+                            <option value="no">No podré asistir</option>
+                        </select>
+                    </div>
+
+                    <div id="extra-fields" class="hidden">
+                        <label class="block font-montserrat text-xs uppercase tracking-widest text-[#D4AF37] mb-2">Pases Confirmados</label>
+                        <div id="passes-info" class="hidden mb-2 text-sm text-[#D4AF37] font-montserrat">Tienes <span id="reserved-passes"></span> pases reservados.</div>
+                        <select id="rsvp-passes" class="w-full bg-white/50 border border-[#D4AF37]/40 rounded-lg px-4 py-3 font-montserrat text-sm text-charcoal focus:outline-none focus:border-[#D4AF37] transition appearance-none">
+                            <option value="">Selecciona cantidad</option>
+                            <option value="1">1 Pase</option>
+                            <option value="2">2 Pases</option>
+                            <option value="3">3 Pases</option>
+                            <option value="4">4 Pases</option>
+                            <option value="5">5 Pases</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#D4AF37] text-white font-montserrat text-sm uppercase tracking-widest py-4 rounded-xl hover:bg-[#aa8022] transition duration-300 shadow-md">
+                        Confirmar Asistencia
+                    </button>
+                    
+                    <div class="text-center mt-6">
+                        <p class="font-montserrat text-xs text-[#D4AF37] mb-1">Dudas o problemas contactar a:</p>
+                        <p class="font-montserrat text-sm text-[#D4AF37] font-bold">4381028162</p>
+                    </div>
+                </form>
+
+                <!-- Thanks Message (Hidden) -->
+                <div id="rsvp-thanks" class="hidden absolute inset-0 glassmorphism flex flex-col items-center justify-center p-8 text-center z-10">
+                    <i class="fas fa-check-circle text-5xl text-sage mb-4"></i>
+                    <h3 class="font-cinzel text-2xl text-charcoal mb-2">¡Gracias!</h3>
+                    <p class="font-cormorant text-lg text-charcoal/80">Tu asistencia ha sido confirmada con éxito. Nos vemos en la boda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Final (Despedida) -->
+        <div class="w-full relative h-[60vh] md:h-[80vh] blend-both reveal pb-12">
+            <img src="https://lh3.googleusercontent.com/d/183IEjySjgu-SjRoS8h6dny7oJMJolv8J" class="w-full h-full object-cover object-center" alt="Novios">
+        </div>
+
+    </main>
+
+    <!-- Modal de Pantalla Completa para las Fotos (Lightbox) -->
+    <div id="lightbox-modal" class="fixed inset-0 z-[70] hidden bg-charcoal/95 backdrop-blur-md flex-col items-center justify-center transition-opacity duration-300 opacity-0">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-[#D4AF37] transition duration-300 text-4xl z-50 drop-shadow-md">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="relative w-full max-w-4xl max-h-[85vh] flex items-center justify-center px-4">
+            <!-- Imagen mostrada -->
+            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300">
+            
+            <!-- Botón Anterior -->
+            <button onclick="changeLightboxPhoto(-1)" class="absolute left-4 md:-left-12 top-1/2 transform -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 text-white hover:bg-[#D4AF37] hover:scale-110 transition duration-300 flex items-center justify-center text-xl md:text-2xl border border-white/20 backdrop-blur-sm z-50">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <!-- Botón Siguiente -->
+            <button onclick="changeLightboxPhoto(1)" class="absolute right-4 md:-right-12 top-1/2 transform -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 text-white hover:bg-[#D4AF37] hover:scale-110 transition duration-300 flex items-center justify-center text-xl md:text-2xl border border-white/20 backdrop-blur-sm z-50">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        <div class="absolute bottom-6 inset-x-0 text-center pointer-events-none">
+            <span id="lightbox-counter" class="text-white font-montserrat text-sm tracking-widest uppercase bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border border-white/20"></span>
+        </div>
+    </div>
+
+    <!-- Floating Audio Player -->
+    <div class="fixed bottom-6 right-6 z-40 hidden" id="audio-container">
+        <button onclick="toggleAudio()" class="w-14 h-14 rounded-full glass-dark text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform backdrop-blur-md border border-white/20">
+            <div id="audio-bars" class="flex items-end h-4 gap-[2px]">
+                <span class="bar paused"></span>
+                <span class="bar paused"></span>
+                <span class="bar paused"></span>
+            </div>
+        </button>
+        <!-- Integración de música desde Dropbox (dl=1 y dl.dropboxusercontent.com) -->
+        <audio id="bg-audio" loop preload="auto">
+            <source src="https://dl.dropboxusercontent.com/scl/fi/g6ohb4pkvyhczghcigvhg/Can-T-Help-Falling-in-Love.mp3?rlkey=smcm748mmzq9180szwqj2i62j&st=qohbn8i1&dl=1" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Admin Panel Button (Conditional) -->
+    <button id="btn-admin" onclick="toggleAdminModal()" class="hidden fixed bottom-6 left-6 z-40 w-12 h-12 rounded-full glass-dark text-sage flex items-center justify-center shadow-lg hover:text-white transition-colors">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-charcoal/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="glassmorphism w-full max-w-md p-6 md:p-8 rounded-3xl relative transform scale-95 transition-transform duration-300 bg-off-white" id="admin-modal-content">
+            <button onclick="toggleAdminModal()" class="absolute top-4 right-4 text-charcoal/50 hover:text-charcoal"><i class="fas fa-times text-xl"></i></button>
+            <h3 class="font-cinzel text-2xl text-charcoal mb-4 text-center">Panel de Control</h3>
+            
+            <!-- Tabs Navigation -->
+            <div class="flex justify-center border-b border-sage/30 mb-6 font-montserrat text-xs uppercase tracking-widest text-charcoal/50">
+                <button onclick="switchAdminTab('generator')" id="tab-btn-generator" class="tab-btn active px-4 py-2 transition-colors">Generador</button>
+                <button onclick="switchAdminTab('rsvps')" id="tab-btn-rsvps" class="tab-btn px-4 py-2 transition-colors">Confirmados</button>
+            </div>
+
+            <!-- Tab: Generador -->
+            <div id="tab-generator" class="space-y-4 font-montserrat text-sm">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-charcoal/70 mb-1">Nombre del Invitado (Opcional)</label>
+                    <input type="text" id="gen-name" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 outline-none focus:border-sage" placeholder="Ej. Familia Pérez">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-charcoal/70 mb-1">Límite de Pases (0-10)</label>
+                    <input type="number" id="gen-passes" min="0" max="10" value="0" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 outline-none focus:border-sage">
+                    <p class="text-[10px] text-charcoal/50 mt-1">0 = Sin límite (el invitado podrá elegir 1 a 5)</p>
+                </div>
+                <button onclick="generateLink()" class="w-full bg-sage text-white py-3 rounded-lg uppercase tracking-wider text-xs hover:bg-charcoal transition shadow mt-4 flex items-center justify-center gap-2">
+                    <i class="fas fa-magic"></i> Generar Enlace
+                </button>
+                
+                <div class="mt-4 flex gap-2">
+                    <input type="text" id="gen-result" readonly class="w-full bg-sand/30 border border-sage/30 rounded-lg px-3 py-2 text-xs text-charcoal outline-none hidden" placeholder="El enlace aparecerá aquí...">
+                    <button id="gen-copy-btn" onclick="copyGeneratedLink()" class="bg-charcoal text-white px-4 py-2 rounded-lg hover:bg-sage transition hidden shadow" title="Copiar enlace">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab: Confirmados (Firebase) -->
+            <div id="tab-rsvps" class="hidden flex flex-col h-64">
+                <div class="flex justify-between items-center mb-4 font-montserrat">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-charcoal/70">Total Pases:</span>
+                        <span class="text-lg font-semibold text-charcoal ml-2" id="admin-total-passes">0</span>
+                    </div>
+                    <button onclick="downloadCSV()" class="bg-sage text-white px-3 py-1 rounded-md text-xs tracking-wider uppercase hover:bg-charcoal transition shadow-sm"><i class="fas fa-download mr-1"></i> Excel</button>
+                </div>
+                <div id="admin-rsvp-list" class="flex-1 overflow-y-auto space-y-2 pr-2 font-montserrat">
+                    <p class="text-xs text-center text-charcoal/50 mt-10"><i class="fas fa-spinner fa-spin text-2xl mb-2"></i><br>Cargando datos...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[60] flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
+
+    <!-- Firebase SDK (Module) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'guadalupe-sergio-wedding';
+        
+        // Configuración de Firebase para "sergio-y-guadalupe"
+        const firebaseConfig = {
+            apiKey: "AIzaSyALM_io_It61iW9pAFaTedhyitzEKVM5wY",
+            authDomain: "sergio-y-guadalupe.firebaseapp.com",
+            projectId: "sergio-y-guadalupe",
+            storageBucket: "sergio-y-guadalupe.firebasestorage.app",
+            messagingSenderId: "156488466185",
+            appId: "1:156488466185:web:c7e7262b5498f0099b9dd8"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // Initialize Authentication (Actualizado con Prevención de Errores)
+        async function initAuth() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('admin') === '1') {
+                        loadRSVPs();
+                    }
+                }
+            });
+
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokenError) {
+                        console.warn("Custom token auth failed, falling back to anonymous auth", tokenError);
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Firebase auth initialization error:", err);
+            }
+        }
+        
+        initAuth();
+
+        window.submitRSVP = async function(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                window.showToast("Conectando con la base de datos... intenta de nuevo en un segundo.", "error");
+                initAuth(); 
+                return;
+            }
+
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            btn.disabled = true;
+
+            const name = document.getElementById('rsvp-name').value;
+            const phone = document.getElementById('rsvp-phone').value;
+            const isAttending = document.getElementById('rsvp-attending').value === 'yes';
+            const passes = isAttending ? parseInt(document.getElementById('rsvp-passes').value) : 0;
+
+            try {
+                const rsvpRef = collection(db, 'artifacts', appId, 'public', 'data', 'rsvps');
+                
+                await addDoc(rsvpRef, {
+                    name: name,
+                    phone: phone,
+                    attending: isAttending,
+                    passes: passes,
+                    timestamp: new Date().toISOString()
+                });
+                
+                localStorage.setItem('rsvp_submitted_guadalupe_sergio', 'true');
+
+                document.getElementById('rsvp-form').classList.add('hidden');
+                document.getElementById('rsvp-thanks').classList.remove('hidden');
+                window.showToast("¡Confirmación enviada con éxito!", "success");
+            } catch (error) {
+                console.error("Error saving RSVP:", error);
+                window.showToast("Hubo un error al guardar. Intenta de nuevo.", "error");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // Cargar lista de confirmados (Real-time)
+        function loadRSVPs() {
+            if (!currentUser) return;
+            const rsvpRef = collection(db, 'artifacts', appId, 'public', 'data', 'rsvps');
+            
+            onSnapshot(rsvpRef, (snapshot) => {
+                const list = document.getElementById('admin-rsvp-list');
+                let html = '';
+                let totalPasses = 0;
+                window.guestListData = []; 
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    window.guestListData.push(data);
+                    
+                    if (data.attending !== false) {
+                        totalPasses += (data.passes || 0);
+                    }
+                    
+                    const attendanceBadge = data.attending === false 
+                        ? `<span class="text-red-500 text-[10px] uppercase font-bold tracking-widest">No asiste</span>`
+                        : `<div class="bg-sage/10 text-sage px-3 py-1 rounded-lg text-center"><span class="block text-lg font-bold leading-none">${data.passes}</span><span class="text-[8px] uppercase tracking-widest">Pases</span></div>`;
+
+                    html += `
+                        <div class="bg-white/70 p-4 rounded-xl border border-sage/20 shadow-sm flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-charcoal text-sm">${data.name}</p>
+                                <p class="text-[10px] text-charcoal/60"><i class="fas fa-phone mr-1"></i>${data.phone}</p>
+                                ${data.attending === false ? attendanceBadge : ''}
+                            </div>
+                            ${data.attending !== false ? attendanceBadge : ''}
+                        </div>
+                    `;
+                });
+                
+                list.innerHTML = html || '<p class="text-xs text-center text-charcoal/50 mt-10">Aún no hay invitados confirmados.</p>';
+                document.getElementById('admin-total-passes').innerText = totalPasses;
+            }, (error) => {
+                console.error("Error loading RSVPs:", error);
+            });
+        }
+    </script>
+
+    <script>
+        // --- Configuration & Globals ---
+        // Fecha principal de la boda (15 de enero de 2027 a las 4:00 PM)
+        const WEDDING_DATE = new Date("2027-01-15T16:00:00").getTime();
+        
+        // Imágenes de la galería de Guadalupe y Sergio
+        const galleryImages = [
+            "https://lh3.googleusercontent.com/d/16hxHHXAyXTR3d4yY_fVMeESTv0vqJ69q",
+            "https://lh3.googleusercontent.com/d/1MiWa7IfIc53bOdhr0f0YA_fKzW7KuXeJ",
+            "https://lh3.googleusercontent.com/d/1zqK7DEsgXk1-GkFP4ruKtq7R3JkjuQEq",
+            "https://lh3.googleusercontent.com/d/1MEDXziA57TjyTRSOPoX49IUATrEcIjHx",
+            "https://lh3.googleusercontent.com/d/1qhjMimo2rqDwGCeZuAHPAsHaMBN0LuMA",
+            "https://lh3.googleusercontent.com/d/1azoUKdK15KSWxXPBDRJ29PP6vInSDtlJ"
+        ];
+        
+        let currentPhotoIndex = 0;
+
+        // --- URL Parameter Parsing ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const passLimit = parseInt(urlParams.get('p'));
+        const isAdmin = urlParams.get('admin') === '1';
+        const guestName = urlParams.get('n');
+
+        // --- Init Function ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initPetals();
+            initCountdown();
+            renderGalleryGrid();
+            applyUrlConfig();
+            initScrollReveal();
+            checkPreviousRSVP();
+        });
+
+        // Verificar si ya se envió el formulario antes
+        function checkPreviousRSVP() {
+            if (localStorage.getItem('rsvp_submitted_guadalupe_sergio') === 'true') {
+                const form = document.getElementById('rsvp-form');
+                const thanks = document.getElementById('rsvp-thanks');
+                if(form && thanks) {
+                    form.classList.add('hidden');
+                    thanks.classList.remove('hidden');
+                    thanks.querySelector('h3').innerText = "¡Ya respondiste!";
+                    thanks.querySelector('p').innerText = "Hemos registrado tu respuesta en nuestro sistema. ¡Gracias!";
+                }
+            }
+        }
+
+        // --- Petals Animation (SVG via JS) ---
+        function initPetals() {
+            const container = document.getElementById('petals-container');
+            const numPetals = 20;
+            
+            for (let i = 0; i < numPetals; i++) {
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("viewBox", "0 0 24 24");
+                svg.classList.add('petal');
+                
+                const size = Math.random() * 12 + 12; 
+                const left = Math.random() * 100; 
+                const durationFall = Math.random() * 12 + 8; 
+                const durationSway = Math.random() * 4 + 2; 
+                const delay = Math.random() * 15; 
+
+                svg.style.width = `${size}px`;
+                svg.style.height = `${size}px`;
+                svg.style.left = `${left}%`;
+                svg.style.animationDuration = `${durationFall}s, ${durationSway}s`;
+                svg.style.animationDelay = `${delay}s, 0s`;
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", "M12 21.5c-1.6 0-7.2-2.3-9.6-6.6-2-3.6-1.5-7.5.9-10C5.1 3 8.3 1.5 12 1.5s6.9 1.5 8.7 3.4c2.4 2.5 2.9 6.4.9 10-2.4 4.3-8 6.6-9.6 6.6z");
+                
+                svg.appendChild(path);
+                container.appendChild(svg);
+            }
+        }
+
+        // --- Scroll Reveal Animations ---
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px" 
+            });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+        }
+
+        // --- Countdown Logic ---
+        function initCountdown() {
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minsEl = document.getElementById('minutes');
+            const secsEl = document.getElementById('seconds');
+
+            const update = () => {
+                const now = new Date().getTime();
+                const distance = WEDDING_DATE - now;
+
+                if (distance < 0) {
+                    daysEl.innerText = "00";
+                    hoursEl.innerText = "00";
+                    minsEl.innerText = "00";
+                    secsEl.innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.innerText = days.toString().padStart(2, '0');
+                hoursEl.innerText = hours.toString().padStart(2, '0');
+                minsEl.innerText = minutes.toString().padStart(2, '0');
+                secsEl.innerText = seconds.toString().padStart(2, '0');
+            };
+
+            update(); 
+            setInterval(update, 1000);
+        }
+
+        // --- Copy to Clipboard & Toast ---
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("¡Texto copiado!", "success");
+            }).catch(err => {
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showToast("¡Texto copiado!", "success");
+            });
+        }
+
+        function showToast(message, type = "success") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-sage' : 'bg-red-500';
+            const icon = type === 'success' ? 'fa-check' : 'fa-exclamation-triangle';
+
+            toast.className = `toast flex items-center justify-center gap-3 ${bgColor} text-white font-montserrat text-sm py-3 px-6 rounded-full shadow-lg`;
+            toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- Gallery & Lightbox Logic ---
+        function renderGalleryGrid() {
+            const grid = document.getElementById('gallery-grid');
+            let html = '';
+            
+            if (galleryImages.length === 0) {
+                grid.innerHTML = '<p class="text-center col-span-full text-charcoal/50 font-montserrat">Las fotos se cargarán próximamente...</p>';
+                return;
+            }
+
+            galleryImages.forEach((src, index) => {
+                html += `
+                    <div class="relative aspect-square md:aspect-[4/5] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group bg-white p-2 md:p-3 border border-sand transition-transform duration-300 hover:-translate-y-1" onclick="openLightbox(${index})">
+                        <img src="${src}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" alt="Galería ${index + 1}">
+                        <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center m-2 md:m-3">
+                            <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if(grid) grid.innerHTML = html;
+        }
+
+        function openLightbox(index) {
+            currentPhotoIndex = index;
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            
+            img.src = galleryImages[currentPhotoIndex];
+            counter.innerText = `${currentPhotoIndex + 1} / ${galleryImages.length}`;
+            
+            modal.classList.remove('hidden');
+            modal.style.display = "flex"; // Ensure flex layout
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.style.display = ""; // Reset inline style
+            }, 300);
+        }
+
+        function changeLightboxPhoto(direction) {
+            currentPhotoIndex += direction;
+            if (currentPhotoIndex < 0) currentPhotoIndex = galleryImages.length - 1;
+            if (currentPhotoIndex >= galleryImages.length) currentPhotoIndex = 0;
+            
+            const imgEl = document.getElementById('lightbox-img');
+            imgEl.style.opacity = 0;
+            
+            setTimeout(() => {
+                imgEl.src = galleryImages[currentPhotoIndex];
+                document.getElementById('lightbox-counter').innerText = `${currentPhotoIndex + 1} / ${galleryImages.length}`;
+                imgEl.style.opacity = 1;
+            }, 200);
+        }
+
+        window.showToast = showToast;
+
+        // --- Admin Panel Logic ---
+        function toggleAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            const content = document.getElementById('admin-modal-content');
+            
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                }, 10);
+            } else {
+                modal.classList.add('opacity-0');
+                content.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function switchAdminTab(tabName) {
+            document.getElementById('tab-btn-generator').classList.remove('active');
+            document.getElementById('tab-btn-rsvps').classList.remove('active');
+            
+            document.getElementById('tab-generator').classList.add('hidden');
+            document.getElementById('tab-rsvps').classList.add('hidden');
+
+            document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+        }
+
+        function generateLink() {
+            const name = document.getElementById('gen-name').value.trim();
+            const passes = parseInt(document.getElementById('gen-passes').value);
+            
+            let baseUrl = window.location.origin + window.location.pathname;
+            let params = new URLSearchParams();
+
+            if (name) params.append('n', name);
+            if (passes > 0) params.append('p', passes);
+
+            const finalString = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+            
+            const resultInput = document.getElementById('gen-result');
+            const copyBtn = document.getElementById('gen-copy-btn');
+            
+            resultInput.value = finalString;
+            resultInput.classList.remove('hidden');
+            copyBtn.classList.remove('hidden');
+            
+            copyToClipboard(finalString);
+        }
+
+        function copyGeneratedLink() {
+            const link = document.getElementById('gen-result').value;
+            if(link) {
+                copyToClipboard(link);
+            }
+        }
+
+        // --- Lógica de Destellos Metálicos Interactivos ---
+        function handleOrientation(event) {
+            let x = event.gamma; 
+            let y = event.beta;  
+            
+            let percentX = Math.min(100, Math.max(0, ((x + 30) / 60) * 100));
+            let percentY = Math.min(100, Math.max(0, ((y - 10) / 70) * 100)); 
+            
+            document.documentElement.style.setProperty('--shine-x', `${percentX}%`);
+            document.documentElement.style.setProperty('--shine-y', `${percentY}%`);
+        }
+
+        function handleMouseMove(event) {
+            let x = (event.clientX / window.innerWidth) * 100;
+            let y = (event.clientY / window.innerHeight) * 100;
+            
+            document.documentElement.style.setProperty('--shine-x', `${x}%`);
+            document.documentElement.style.setProperty('--shine-y', `${y}%`);
+        }
+
+        // --- Funciones de Interfaz ---
+        function openInvitation() {
+            const splash = document.getElementById('splash-screen');
+            const main = document.getElementById('main-content');
+            const audioContainer = document.getElementById('audio-container');
+            const audio = document.getElementById('bg-audio');
+
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(permissionState => {
+                    if (permissionState === 'granted') window.addEventListener('deviceorientation', handleOrientation);
+                }).catch(console.error);
+            } else {
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
+            window.addEventListener('mousemove', handleMouseMove);
+
+            splash.classList.add('fade-out');
+            setTimeout(() => {
+                splash.classList.add('hidden');
+                main.classList.remove('hidden');
+                audioContainer.classList.remove('hidden');
+                
+                audio.play().then(() => {
+                    const bars = document.querySelectorAll('.bar');
+                    bars.forEach(bar => bar.classList.remove('paused'));
+                    window.isPlaying = true;
+                }).catch(e => console.log("Audio autoplay bloqueado."));
+                
+            }, 1000);
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('bg-audio');
+            const bars = document.querySelectorAll('.bar');
+            
+            if (window.isPlaying) {
+                audio.pause();
+                bars.forEach(bar => bar.classList.add('paused'));
+            } else {
+                audio.play();
+                bars.forEach(bar => bar.classList.remove('paused'));
+            }
+            window.isPlaying = !window.isPlaying;
+        }
+
+        function toggleFormFields(isAttending) {
+            const extraFields = document.getElementById('extra-fields');
+            const passesSelect = document.getElementById('rsvp-passes');
+            if (isAttending) {
+                extraFields.classList.remove('hidden');
+                passesSelect.required = true;
+            } else {
+                extraFields.classList.add('hidden');
+                passesSelect.required = false;
+                passesSelect.value = "";
+            }
+        }
+
+        function applyUrlConfig() {
+            if (isAdmin) {
+                const btn = document.getElementById('btn-admin');
+                if(btn) btn.classList.remove('hidden');
+            }
+
+            if (guestName) {
+                const greeting = document.getElementById('guest-greeting');
+                const nameEl = document.getElementById('guest-name');
+                const inputName = document.getElementById('rsvp-name');
+                if(greeting && nameEl) {
+                    greeting.classList.remove('hidden');
+                    nameEl.innerText = guestName;
+                }
+                if(inputName) inputName.value = guestName;
+            }
+
+            const passesSelect = document.getElementById('rsvp-passes');
+            const passesInfo = document.getElementById('passes-info');
+            const reservedSpan = document.getElementById('reserved-passes');
+
+            if (passesSelect) {
+                passesSelect.innerHTML = '<option value="">Selecciona cantidad</option>';
+                let limit = (passLimit && passLimit > 0) ? passLimit : 5;
+                for (let i = 1; i <= limit; i++) {
+                    passesSelect.innerHTML += `<option value="${i}">${i} Pase${i > 1 ? 's' : ''}</option>`;
+                }
+                if (passLimit > 0 && passesInfo && reservedSpan) {
+                    passesInfo.classList.remove('hidden');
+                    reservedSpan.innerText = passLimit;
+                }
+            }
+        }
+
+        function downloadCSV() {
+            if(!window.guestListData || window.guestListData.length === 0) {
+                showToast("No hay datos para exportar", "error");
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,Nombre,Telefono,Asiste,Pases\n";
+            window.guestListData.forEach(row => {
+                let asiste = row.attending ? "Si" : "No";
+                let pases = row.attending ? (row.passes || 0) : 0;
+                csvContent += `"${row.name}","${row.phone}","${asiste}","${pases}"\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "invitados_boda_guadalupe_sergio.csv");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+    </script>
+</body>
+</html>
