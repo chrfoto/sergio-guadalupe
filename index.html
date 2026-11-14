@@ -848,8 +848,7 @@
             "https://lh3.googleusercontent.com/d/1zqK7DEsgXk1-GkFP4ruKtq7R3JkjuQEq",
             "https://lh3.googleusercontent.com/d/1MEDXziA57TjyTRSOPoX49IUATrEcIjHx",
             "https://lh3.googleusercontent.com/d/1qhjMimo2rqDwGCeZuAHPAsHaMBN0LuMA",
-            "https://lh3.googleusercontent.com/d/1azoUKdK15KSWxXPBDRJ29PP6vInSDtlJ",
-            "https://lh3.googleusercontent.com/d/1JdPlKMV1fG4to5Um7tkudGUsSguxbxaZ"
+            "https://lh3.googleusercontent.com/d/1azoUKdK15KSWxXPBDRJ29PP6vInSDtlJ"
         ];
         
         let currentPhotoIndex = 0;
@@ -1013,10 +1012,12 @@
 
             galleryImages.forEach((src, index) => {
                 html += `
-                    <div class="relative aspect-square md:aspect-[4/5] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group bg-white p-2 md:p-3 border border-sand transition-transform duration-300 hover:-translate-y-1" onclick="openLightbox(${index})">
-                        <img src="${src}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" alt="Galería ${index + 1}">
-                        <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center m-2 md:m-3">
-                            <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                    <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group bg-white p-2 pb-8 md:p-3 md:pb-12 border border-sand transition-transform duration-300 hover:-translate-y-1" onclick="openLightbox(${index})">
+                        <div class="relative w-full aspect-square md:aspect-[4/5] overflow-hidden">
+                            <img src="${src}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" alt="Galería ${index + 1}">
+                            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                            </div>
                         </div>
                     </div>
                 `;
